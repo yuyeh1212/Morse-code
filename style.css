@@ -1,0 +1,145 @@
+* {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  padding: 100px;
+  box-sizing: border-box;
+  background-color: #a882f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.panels {
+  display: flex;
+  width: 100%;
+}
+
+.panel {
+  flex: 5;
+  padding: 30px;
+  background-color: #fff;
+  color: #a882f6;
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+}
+.panel.yellow {
+  flex: 4;
+  background-color: #ffee5a;
+}
+
+h1,
+h3 {
+  margin: 0;
+  text-align: center;
+}
+
+h1 {
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+h3 {
+  font-weight: 400;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 20px;
+  letter-spacing: 1px;
+  outline: none;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+}
+textarea:focus {
+  border-color: #a882f6;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 0px;
+  margin: 6px;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  border: none;
+  cursor: pointer;
+}
+button.purple {
+  background-color: #a882f6;
+  color: white;
+}
+button.yellow {
+  background-color: #ffee5a;
+}
+button.white {
+  border: solid 2px #a882f6;
+  background-color: white;
+  color: #a882f6;
+}
+
+.symbol {
+  font-size: 24px;
+  text-align: center;
+  font-weight: 900;
+}
+
+hr {
+  border: none;
+  border-bottom: 3px solid #a882f6;
+}
+
+.translist {
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+}
+.translist li {
+  margin-bottom: 5px;
+  font-size: 18px;
+  width: 30%;
+}
+
+.decoration {
+  font-size: 500px;
+  color: white;
+  position: absolute;
+  font-weight: 900;
+  left: -50px;
+  top: -50px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.playlist {
+  font-size: 20px;
+  text-align: center;
+  height: 20px;
+}
+.playlist .playing {
+  color: #ffee5a;
+}
+
+audio {
+  display: none;
+}/*# sourceMappingURL=style.css.map */

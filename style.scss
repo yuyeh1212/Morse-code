@@ -1,0 +1,156 @@
+$colorPurple: #a882f6;
+$colorYellow: #ffee5a;
+
+* {
+  // border: 1px solid #000
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  padding: 100px;
+  box-sizing: border-box;
+  background-color: $colorPurple;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.panels {
+  display: flex;
+  width: 100%;
+}
+
+.panel {
+  flex: 5;
+  padding: 30px;
+  background-color: #fff;
+  color: $colorPurple;
+  box-shadow: 0px 0px 30px rgba(black, 0.2);
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+
+  &.yellow {
+    flex: 4;
+    background-color: $colorYellow;
+  }
+}
+
+h1,
+h3 {
+  margin: 0;
+  text-align: center;
+}
+
+h1 {
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+h3 {
+  font-weight: 400;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 20px;
+  letter-spacing: 1px;
+  outline: none;
+  border: 2px solid rgba(black, 0.3);
+
+  &:focus {
+    border-color: $colorPurple;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 0px;
+  margin: 6px;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  border: none;
+  cursor: pointer;
+
+  &.purple {
+    background-color: $colorPurple;
+    color: white;
+  }
+
+  &.yellow {
+    background-color: $colorYellow;
+  }
+
+  &.white {
+    border: solid 2px $colorPurple;
+    background-color: white;
+    color: $colorPurple;
+  }
+}
+
+.symbol {
+  font-size: 24px;
+  text-align: center;
+  font-weight: 900;
+}
+
+hr {
+  border: none;
+  border-bottom: 3px solid $colorPurple;
+}
+
+.translist {
+  display: flex;
+  flex-direction: column;
+  height: 450px;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+
+  li {
+    margin-bottom: 5px;
+    font-size: 18px;
+    width: 30%;
+  }
+}
+
+.decoration {
+  font-size: 500px;
+  color: white;
+  position: absolute;
+  font-weight: 900;
+  left: -50px;
+  top: -50px;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.playlist {
+  font-size: 20px;
+  text-align: center;
+  height: 20px;
+
+  .playing {
+    color: $colorYellow;
+  }
+}
+
+audio {
+  display: none;
+}
