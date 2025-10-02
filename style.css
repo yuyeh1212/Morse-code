@@ -21,6 +21,7 @@ body {
 .panels {
   display: flex;
   width: 100%;
+  gap: 0;
 }
 
 .panel {
@@ -33,6 +34,7 @@ body {
   position: relative;
   z-index: 1;
 }
+
 .panel.yellow {
   flex: 4;
   background-color: #ffee5a;
@@ -61,46 +63,86 @@ textarea {
   letter-spacing: 1px;
   outline: none;
   border: 2px solid rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
+
 textarea:focus {
   border-color: #a882f6;
+}
+
+textarea.highlight {
+  background-color: #a882f6;
+  color: white;
 }
 
 .buttons {
   display: flex;
   justify-content: center;
   margin-top: 30px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 button {
   padding: 10px 20px;
   border-radius: 0px;
-  margin: 6px;
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 3px;
   border: none;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 button.purple {
   background-color: #a882f6;
   color: white;
 }
+
 button.yellow {
   background-color: #ffee5a;
 }
+
 button.white {
   border: solid 2px #a882f6;
   background-color: white;
   color: #a882f6;
 }
 
+button.red {
+  background-color: #ff6b6b;
+  color: white;
+}
+
 .symbol {
   font-size: 24px;
   text-align: center;
   font-weight: 900;
+  transition: transform 0.5s ease;
 }
 
+.symbol.rotating {
+  animation: rotate 0.5s ease;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 hr {
   border: none;
   border-bottom: 3px solid #a882f6;
@@ -114,6 +156,7 @@ hr {
   list-style: none;
   padding: 0;
 }
+
 .translist li {
   margin-bottom: 5px;
   font-size: 18px;
@@ -134,12 +177,41 @@ hr {
 .playlist {
   font-size: 20px;
   text-align: center;
-  height: 20px;
-}
-.playlist .playing {
-  color: #ffee5a;
+  height: 30px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
 }
 
-audio {
-  display: none;
+.playlist span {
+  transition: color 0.2s ease;
+}
+
+.playlist .playing {
+  color: #ffee5a;
+  font-weight: bold;
+  transform: scale(1.2);
+}
+
+.error-message {
+  color: #ff6b6b;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  min-height: 20px;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 20px;
+  }
+  .panels {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .decoration {
+    font-size: 200px;
+  }
 }/*# sourceMappingURL=style.css.map */

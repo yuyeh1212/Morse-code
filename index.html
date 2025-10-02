@@ -17,23 +17,25 @@
       <div class="panel">
         <h3>Morse Code Translation</h3>
         <h1>摩斯密碼翻譯器</h1>
-        <textarea id="input" rows="4" placeholder="請輸入英文">
-MORSECODE</textarea
+        <textarea id="input" rows="4" placeholder="請輸入英文、數字或符號">
+HELLO WORLD</textarea
         >
         <div class="symbol">⇵</div>
-        <textarea id="output" rows="4" placeholder="請輸入密碼"></textarea>
-        <div class="playlist"></div>
+        <textarea id="output" rows="4" placeholder="請輸入摩斯密碼"></textarea>
+        <div class="error-message" id="errorMsg"></div>
+        <div class="playlist" id="playlist"></div>
         <div class="buttons">
           <button class="purple" id="btnMorse">翻譯成密碼</button>
           <button class="yellow" id="btnEng">翻譯成英文</button>
           <button class="white" id="btnPlay">播放</button>
+          <button class="red" id="btnStop" style="display: none">停止</button>
         </div>
         <audio
-          class="short"
+          id="shortBeep"
           src="https://2017.awiclass.monoame.com/audio/morse/short.mp3"
         ></audio>
         <audio
-          class="long"
+          id="longBeep"
           src="https://2017.awiclass.monoame.com/audio/morse/long.mp3"
         ></audio>
       </div>
@@ -41,14 +43,12 @@ MORSECODE</textarea
       <div class="panel yellow">
         <h3>翻譯清單</h3>
         <hr />
-        <ul class="translist"></ul>
+        <ul class="translist" id="translist"></ul>
       </div>
 
       <div class="decoration">MORSE CODE</div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.6/velocity.min.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>
