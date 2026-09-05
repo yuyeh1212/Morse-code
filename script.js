@@ -1,3 +1,19 @@
+// 翻譯模式設定：決定 Input/Output 的 placeholder 與翻譯按鈕的文字、顏色
+const MODE_CONFIG = {
+  toMorse: {
+    inputPlaceholder: "請輸入英文、數字或符號",
+    outputPlaceholder: "翻譯結果（摩斯密碼）",
+    buttonLabel: "翻譯成密碼",
+    buttonClass: "purple",
+  },
+  toText: {
+    inputPlaceholder: "請輸入摩斯密碼（. - 與空格）",
+    outputPlaceholder: "翻譯結果（英文）",
+    buttonLabel: "翻譯成英文",
+    buttonClass: "yellow",
+  },
+};
+
 // 使用 Map 資料結構以提升查找效能 O(1)
 class MorseCodeTranslator {
   constructor() {
@@ -8,10 +24,12 @@ class MorseCodeTranslator {
     this.morseToChar = new Map();
     this.playTimer = null;
     this.isPlaying = false;
+    this.mode = "toMorse";
 
     this.init(morseData);
     this.bindEvents();
     this.setupAudio();
+    this.applyMode();
   }
 
   init(morseData) {
@@ -38,11 +56,8 @@ class MorseCodeTranslator {
 
   bindEvents() {
     document
-      .getElementById("btnMorse")
-      .addEventListener("click", () => this.translateToMorse());
-    document
-      .getElementById("btnEng")
-      .addEventListener("click", () => this.translateToEnglish());
+      .getElementById("btnTranslate")
+      .addEventListener("click", () => this.translate());
     document
       .getElementById("btnPlay")
       .addEventListener("click", () => this.playMorse());
@@ -50,13 +65,23 @@ class MorseCodeTranslator {
       .getElementById("btnStop")
       .addEventListener("click", () => this.stopPlaying());
     document
+      .getElementById("btnCopy")
+      .addEventListener("click", () => this.copyMorse());
+    document
+      .getElementById("btnSwap")
+      .addEventListener("click", () => this.swapContent());
+    document
       .getElementById("input")
       .addEventListener("input", (e) => this.sanitizeInput(e));
   }
 
   sanitizeInput(e) {
     const original = e.target.value;
-    const cleaned = original.toUpperCase().replace(/[^A-Z0-9/\s]/g, "");
+    const cleaned =
+      this.mode === "toMorse"
+        ? original.toUpperCase().replace(/[^A-Z0-9/\s]/g, "")
+        : original.replace(/[^.\-\s]/g, "");
+
     if (original !== cleaned) {
       e.target.value = cleaned;
       this.showError("已移除不支援的字元");
@@ -64,45 +89,63 @@ class MorseCodeTranslator {
     }
   }
 
-  translateToMorse() {
-    const input = document.getElementById("input").value.trim();
-    if (!input) {
-      this.showError("請輸入文字");
-      return;
+  translate() {
+    const value = document.getElementById("input").value.trim();
+
+    if (this.mode === "toMorse") {
+      if (!value) {
+        this.showError("請輸入文字");
+        return;
+      }
+
+      const result = value
+        .toUpperCase()
+        .split("")
+        .map((char) => {
+          if (char === " ") return " ";
+          return this.charToMorse.get(char) || char;
+        })
+        .join(" ");
+
+      this.updateOutput(result);
+    } else {
+      if (!value) {
+        this.showError("請輸入摩斯密碼");
+        return;
+      }
+
+      const codes = value.split(" ");
+      const result = codes
+        .map((code) => {
+          if (code === "") return " ";
+          return this.morseToChar.get(code) || code;
+        })
+        .join("");
+
+      this.updateOutput(result);
     }
 
-    const result = input
-      .toUpperCase()
-      .split("")
-      .map((char) => {
-        if (char === " ") return " ";
-        return this.charToMorse.get(char) || char;
-      })
-      .join(" ");
-
-    this.updateOutput(result);
     this.animateSymbol();
     this.clearError();
   }
 
-  translateToEnglish() {
-    const input = document.getElementById("output").value.trim();
-    if (!input) {
-      this.showError("請輸入摩斯密碼");
-      return;
-    }
+  applyMode() {
+    const config = MODE_CONFIG[this.mode];
+    const input = document.getElementById("input");
+    const output = document.getElementById("output");
+    const btn = document.getElementById("btnTranslate");
 
-    const codes = input.split(" ");
-    const result = codes
-      .map((code) => {
-        if (code === "") return " ";
-        return this.morseToChar.get(code) || code;
-      })
-      .join("");
+    input.placeholder = config.inputPlaceholder;
+    output.placeholder = config.outputPlaceholder;
+    btn.textContent = config.buttonLabel;
+    btn.classList.remove("purple", "yellow");
+    btn.classList.add(config.buttonClass);
+  }
 
-    this.updateInput(result);
-    this.animateSymbol();
-    this.clearError();
+  getMorseField() {
+    return this.mode === "toMorse"
+      ? document.getElementById("output")
+      : document.getElementById("input");
   }
 
   updateOutput(text) {
@@ -112,13 +155,6 @@ class MorseCodeTranslator {
     setTimeout(() => output.classList.remove("highlight"), 500);
   }
 
-  updateInput(text) {
-    const input = document.getElementById("input");
-    input.value = text;
-    input.classList.add("highlight");
-    setTimeout(() => input.classList.remove("highlight"), 500);
-  }
-
   animateSymbol() {
     const symbol = document.querySelector(".symbol");
     symbol.classList.add("rotating");
@@ -126,7 +162,7 @@ class MorseCodeTranslator {
   }
 
   async playMorse() {
-    const morse = document.getElementById("output").value.trim();
+    const morse = this.getMorseField().value.trim();
     if (!morse) {
       this.showError("請先翻譯成摩斯密碼");
       return;
@@ -190,6 +226,57 @@ class MorseCodeTranslator {
     this.playTimer = setTimeout(() => {
       this.playSequence(morse, index + 1);
     }, duration);
+  }
+
+  async copyMorse() {
+    const field = this.getMorseField();
+    const morse = field.value.trim();
+    if (!morse) {
+      this.showError("沒有可複製的密碼");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(morse);
+    } catch (err) {
+      field.select();
+      document.execCommand("copy");
+    }
+
+    this.showCopySuccess();
+    this.clearError();
+  }
+
+  showCopySuccess() {
+    const btn = document.getElementById("btnCopy");
+    if (btn.dataset.copying) return;
+
+    btn.dataset.copying = "true";
+    const original = btn.textContent;
+    btn.textContent = "✓ 已複製";
+    btn.classList.add("copied");
+
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove("copied");
+      delete btn.dataset.copying;
+    }, 1500);
+  }
+
+  swapContent() {
+    const input = document.getElementById("input");
+    const output = document.getElementById("output");
+
+    if (!input.value.trim() && !output.value.trim()) {
+      this.showError("沒有內容可以交換");
+      return;
+    }
+
+    [input.value, output.value] = [output.value, input.value];
+    this.mode = this.mode === "toMorse" ? "toText" : "toMorse";
+    this.applyMode();
+    this.animateSymbol();
+    this.clearError();
   }
 
   stopPlaying() {

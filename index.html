@@ -20,15 +20,23 @@
         <textarea id="input" rows="4" placeholder="請輸入英文、數字或符號">
 HELLO WORLD</textarea
         >
-        <div class="symbol">⇵</div>
+        <button
+          type="button"
+          class="symbol"
+          id="btnSwap"
+          title="交換上下內容"
+          aria-label="交換上下內容"
+        >
+          ⇵
+        </button>
         <textarea id="output" rows="4" placeholder="請輸入摩斯密碼"></textarea>
         <div class="error-message" id="errorMsg"></div>
         <div class="playlist" id="playlist"></div>
         <div class="buttons">
-          <button class="purple" id="btnMorse">翻譯成密碼</button>
-          <button class="yellow" id="btnEng">翻譯成英文</button>
+          <button class="purple" id="btnTranslate">翻譯成密碼</button>
           <button class="white" id="btnPlay">播放</button>
           <button class="red" id="btnStop" style="display: none">停止</button>
+          <button class="white" id="btnCopy">複製</button>
         </div>
         <audio
           id="shortBeep"
